@@ -8,3 +8,138 @@
 ``` bash
 pip install cjm_fasthtml_step_progress
 ```
+
+## Project Structure
+
+    nbs/
+    ├── components/ (1)
+    │   └── progress_bar.ipynb  # Compact segmented progress bar for multi-step workflows.
+    └── core/ (2)
+        ├── config.ipynb  # Configuration dataclass for the step progress bar component.
+        └── models.ipynb  # Data models for the step progress bar component.
+
+Total: 3 notebooks across 2 directories
+
+## Module Dependencies
+
+``` mermaid
+graph LR
+    components_progress_bar[components.progress_bar<br/>Progress Bar]
+    core_config[core.config<br/>Config]
+    core_models[core.models<br/>Models]
+
+    components_progress_bar --> core_models
+    components_progress_bar --> core_config
+```
+
+*2 cross-module dependencies detected*
+
+## CLI Reference
+
+No CLI commands found in this project.
+
+## Module Overview
+
+Detailed documentation for each module in the project:
+
+### Config (`config.ipynb`)
+
+> Configuration dataclass for the step progress bar component.
+
+#### Import
+
+``` python
+from cjm_fasthtml_step_progress.core.config import (
+    StepProgressConfig
+)
+```
+
+#### Classes
+
+``` python
+@dataclass
+class StepProgressConfig:
+    "Rendering configuration for the step progress bar."
+    
+    height: int = 3  # Tailwind h-{value} scale (h-3 = 12px)
+    track_bg: str = 'base_300'  # bg_dui attribute for unfilled track
+    fill_bg: str = 'primary'  # bg_dui attribute for completed segments
+    current_opacity: int = 60  # opacity % for current step segment
+    border_radius: str = 'field'  # border_radius attribute (field/box/selector)
+    separator_color: str = 'base_100'  # border_dui attribute for segment dividers
+    show_tooltips: bool = True  # show step name tooltips on hover
+    tooltip_position: str = 'top'  # tooltip_placement attribute (top/bottom/left/right)
+    id: str = 'step-progress'  # HTML id for the progress bar container
+```
+
+### Models (`models.ipynb`)
+
+> Data models for the step progress bar component.
+
+#### Import
+
+``` python
+from cjm_fasthtml_step_progress.core.models import (
+    StepInfo
+)
+```
+
+#### Classes
+
+``` python
+@dataclass
+class StepInfo:
+    "Describes a single step in a multi-step workflow."
+    
+    title: str  # step name shown in tooltip on hover
+```
+
+### Progress Bar (`progress_bar.ipynb`)
+
+> Compact segmented progress bar for multi-step workflows.
+
+#### Import
+
+``` python
+from cjm_fasthtml_step_progress.components.progress_bar import (
+    render_step_progress,
+    create_step_progress_renderer
+)
+```
+
+#### Functions
+
+``` python
+def _build_segment_fill_cls(
+    idx: int,          # segment index
+    current: int,      # current step index
+    config: StepProgressConfig,  # rendering config
+) -> str:              # combined CSS class string for the fill div
+    "Build CSS classes for a segment's inner fill div."
+```
+
+``` python
+def _build_segment(
+    step: StepInfo,    # step descriptor
+    idx: int,          # segment index
+    current: int,      # current step index
+    config: StepProgressConfig,  # rendering config
+) -> FT:               # FastHTML element for one segment
+    "Build a single progress bar segment."
+```
+
+``` python
+def render_step_progress(
+    steps: Sequence[StepInfo],              # ordered step definitions
+    current_index: int,                     # 0-based index of the current step
+    config: Optional[StepProgressConfig] = None,  # rendering config (defaults used if None)
+) -> FT:                                    # the progress bar element
+    "Render a compact segmented progress bar showing position in a multi-step workflow."
+```
+
+``` python
+def create_step_progress_renderer(
+    config: Optional[StepProgressConfig] = None,  # rendering config
+) -> Callable:  # callable with signature (steps, current_index) -> FT
+    "Create a progress renderer callback for StepFlow integration."
+```
