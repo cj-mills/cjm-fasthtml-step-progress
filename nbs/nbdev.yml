@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "cjm-fasthtml-step-progress"
+  site-url: "https://cj-mills.github.io/cjm-fasthtml-step-progress"
+  description: "A compact, theme-aware step progress bar component for FastHTML multi-step workflows."
+  repo-branch: main
+  repo-url: "https://github.com/cj-mills/cjm-fasthtml-step-progress"
