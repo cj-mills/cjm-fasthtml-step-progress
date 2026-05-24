@@ -1,0 +1,161 @@
+[
+  {
+    "objectID": "core/models.html",
+    "href": "core/models.html",
+    "title": "Models",
+    "section": "",
+    "text": "def StepInfo(\n    title:str\n)-&gt;None:\n\nDescribes a single step in a multi-step workflow.\n\n# Test StepInfo\nstep = StepInfo(title=\"Selection\")\nassert step.title == \"Selection\"\n\nstep2 = StepInfo(\"Segment & Align\")\nassert step2.title == \"Segment & Align\"\n\nprint(\"StepInfo tests passed!\")\n\nStepInfo tests passed!",
+    "crumbs": [
+      "core",
+      "Models"
+    ]
+  },
+  {
+    "objectID": "core/models.html#stepinfo",
+    "href": "core/models.html#stepinfo",
+    "title": "Models",
+    "section": "",
+    "text": "def StepInfo(\n    title:str\n)-&gt;None:\n\nDescribes a single step in a multi-step workflow.\n\n# Test StepInfo\nstep = StepInfo(title=\"Selection\")\nassert step.title == \"Selection\"\n\nstep2 = StepInfo(\"Segment & Align\")\nassert step2.title == \"Segment & Align\"\n\nprint(\"StepInfo tests passed!\")\n\nStepInfo tests passed!",
+    "crumbs": [
+      "core",
+      "Models"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "",
+    "text": "pip install cjm_fasthtml_step_progress",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "",
+    "text": "pip install cjm_fasthtml_step_progress",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "index.html#project-structure",
+    "href": "index.html#project-structure",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "Project Structure",
+    "text": "Project Structure\nnbs/\n├── components/ (1)\n│   └── progress_bar.ipynb  # Compact segmented progress bar for multi-step workflows.\n└── core/ (2)\n    ├── config.ipynb  # Configuration dataclass for the step progress bar component.\n    └── models.ipynb  # Data models for the step progress bar component.\nTotal: 3 notebooks across 2 directories",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "index.html#module-dependencies",
+    "href": "index.html#module-dependencies",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "Module Dependencies",
+    "text": "Module Dependencies\ngraph LR\n    components_progress_bar[components.progress_bar&lt;br/&gt;Progress Bar]\n    core_config[core.config&lt;br/&gt;Config]\n    core_models[core.models&lt;br/&gt;Models]\n\n    components_progress_bar --&gt; core_models\n    components_progress_bar --&gt; core_config\n2 cross-module dependencies detected",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "index.html#cli-reference",
+    "href": "index.html#cli-reference",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "CLI Reference",
+    "text": "CLI Reference\nNo CLI commands found in this project.",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "index.html#module-overview",
+    "href": "index.html#module-overview",
+    "title": "cjm-fasthtml-step-progress",
+    "section": "Module Overview",
+    "text": "Module Overview\nDetailed documentation for each module in the project:\n\nConfig (config.ipynb)\n\nConfiguration dataclass for the step progress bar component.\n\n\nImport\nfrom cjm_fasthtml_step_progress.core.config import (\n    StepProgressConfig\n)\n\n\nClasses\n@dataclass\nclass StepProgressConfig:\n    \"Rendering configuration for the step progress bar.\"\n    \n    height: int = 3  # Tailwind h-{value} scale (h-3 = 12px)\n    track_bg: str = 'base_300'  # bg_dui attribute for unfilled track\n    fill_bg: str = 'primary'  # bg_dui attribute for completed segments\n    current_opacity: int = 60  # opacity % for current step segment\n    border_radius: str = 'field'  # border_radius attribute (field/box/selector)\n    separator_color: str = 'base_100'  # border_dui attribute for segment dividers\n    show_tooltips: bool = True  # show step name tooltips on hover\n    tooltip_position: str = 'top'  # tooltip_placement attribute (top/bottom/left/right)\n    id: str = 'step-progress'  # HTML id for the progress bar container\n\n\n\nModels (models.ipynb)\n\nData models for the step progress bar component.\n\n\nImport\nfrom cjm_fasthtml_step_progress.core.models import (\n    StepInfo\n)\n\n\nClasses\n@dataclass\nclass StepInfo:\n    \"Describes a single step in a multi-step workflow.\"\n    \n    title: str  # step name shown in tooltip on hover\n\n\n\nProgress Bar (progress_bar.ipynb)\n\nCompact segmented progress bar for multi-step workflows.\n\n\nImport\nfrom cjm_fasthtml_step_progress.components.progress_bar import (\n    render_step_progress,\n    create_step_progress_renderer\n)\n\n\nFunctions\ndef _build_segment_fill_cls(\n    idx: int,          # segment index\n    current: int,      # current step index\n    config: StepProgressConfig,  # rendering config\n) -&gt; str:              # combined CSS class string for the fill div\n    \"Build CSS classes for a segment's inner fill div.\"\ndef _build_segment(\n    step: StepInfo,    # step descriptor\n    idx: int,          # segment index\n    current: int,      # current step index\n    config: StepProgressConfig,  # rendering config\n) -&gt; FT:               # FastHTML element for one segment\n    \"Build a single progress bar segment.\"\ndef render_step_progress(\n    steps: Sequence[StepInfo],              # ordered step definitions\n    current_index: int,                     # 0-based index of the current step\n    config: Optional[StepProgressConfig] = None,  # rendering config (defaults used if None)\n) -&gt; FT:                                    # the progress bar element\n    \"Render a compact segmented progress bar showing position in a multi-step workflow.\"\ndef create_step_progress_renderer(\n    config: Optional[StepProgressConfig] = None,  # rendering config\n) -&gt; Callable:  # callable with signature (steps, current_index) -&gt; FT\n    \"Create a progress renderer callback for StepFlow integration.\"",
+    "crumbs": [
+      "cjm-fasthtml-step-progress"
+    ]
+  },
+  {
+    "objectID": "components/progress_bar.html",
+    "href": "components/progress_bar.html",
+    "title": "Progress Bar",
+    "section": "",
+    "text": "# Test _build_segment_fill_cls\ncfg = StepProgressConfig()\n\n# Completed segment\ncls = _build_segment_fill_cls(0, 2, cfg)\nassert 'bg-primary' in cls\nassert '/60' not in cls\nassert 'transition-colors' in cls\n\n# Current segment\ncls = _build_segment_fill_cls(2, 2, cfg)\nassert 'bg-primary/60' in cls\n\n# Future segment\ncls = _build_segment_fill_cls(3, 2, cfg)\nassert 'bg-primary' not in cls\nassert 'h-full' in cls\n\n# Custom fill color\ncustom_cfg = StepProgressConfig(fill_bg='secondary', current_opacity=40)\ncls = _build_segment_fill_cls(1, 1, custom_cfg)\nassert 'bg-secondary/40' in cls\n\nprint(\"_build_segment_fill_cls tests passed!\")",
+    "crumbs": [
+      "components",
+      "Progress Bar"
+    ]
+  },
+  {
+    "objectID": "components/progress_bar.html#build_segment_fill_cls",
+    "href": "components/progress_bar.html#build_segment_fill_cls",
+    "title": "Progress Bar",
+    "section": "",
+    "text": "# Test _build_segment_fill_cls\ncfg = StepProgressConfig()\n\n# Completed segment\ncls = _build_segment_fill_cls(0, 2, cfg)\nassert 'bg-primary' in cls\nassert '/60' not in cls\nassert 'transition-colors' in cls\n\n# Current segment\ncls = _build_segment_fill_cls(2, 2, cfg)\nassert 'bg-primary/60' in cls\n\n# Future segment\ncls = _build_segment_fill_cls(3, 2, cfg)\nassert 'bg-primary' not in cls\nassert 'h-full' in cls\n\n# Custom fill color\ncustom_cfg = StepProgressConfig(fill_bg='secondary', current_opacity=40)\ncls = _build_segment_fill_cls(1, 1, custom_cfg)\nassert 'bg-secondary/40' in cls\n\nprint(\"_build_segment_fill_cls tests passed!\")",
+    "crumbs": [
+      "components",
+      "Progress Bar"
+    ]
+  },
+  {
+    "objectID": "components/progress_bar.html#build_segment",
+    "href": "components/progress_bar.html#build_segment",
+    "title": "Progress Bar",
+    "section": "_build_segment",
+    "text": "_build_segment\n\nfrom fasthtml.common import to_xml\n\n# Test _build_segment with tooltips\ncfg = StepProgressConfig()\nstep = StepInfo(\"Selection\")\n\nseg = _build_segment(step, 0, 1, cfg)\nhtml = to_xml(seg)\nassert 'data-tip=\"Selection\"' in html\nassert 'tooltip' in html\nassert 'tooltip-top' in html\nassert 'flex-1' in html\nassert 'bg-primary' in html\nassert 'border-l' not in html  # first segment, no separator\n\n# Second segment has separator\nseg2 = _build_segment(StepInfo(\"Review\"), 1, 0, cfg)\nhtml2 = to_xml(seg2)\nassert 'border-l-1' in html2\nassert 'border-base-100' in html2\n\n# Test without tooltips\nno_tip_cfg = StepProgressConfig(show_tooltips=False)\nseg3 = _build_segment(step, 0, 0, no_tip_cfg)\nhtml3 = to_xml(seg3)\nassert 'tooltip' not in html3\nassert 'data-tip' not in html3\nassert 'flex-1' in html3\n\nprint(\"_build_segment tests passed!\")\n\n_build_segment tests passed!",
+    "crumbs": [
+      "components",
+      "Progress Bar"
+    ]
+  },
+  {
+    "objectID": "components/progress_bar.html#render_step_progress",
+    "href": "components/progress_bar.html#render_step_progress",
+    "title": "Progress Bar",
+    "section": "render_step_progress",
+    "text": "render_step_progress\n\n\nrender_step_progress\n\ndef render_step_progress(\n    steps:Sequence, # ordered step definitions\n    current_index:int, # 0-based index of the current step\n    config:Optional=None, # rendering config (defaults used if None)\n)-&gt;FT: # the progress bar element\n\nRender a compact segmented progress bar showing position in a multi-step workflow.\n\n# Test render_step_progress\nsteps = [\n    StepInfo(\"Selection\"),\n    StepInfo(\"Segment & Align\"),\n    StepInfo(\"Review\"),\n    StepInfo(\"Verify\"),\n]\n\n# Default config, step 1\nbar = render_step_progress(steps, 1)\nhtml = to_xml(bar)\nassert 'id=\"step-progress\"' in html\nassert 'flex' in html\nassert 'flex-row' in html\nassert 'w-full' in html\nassert 'h-3' in html\nassert 'rounded-field' in html\nassert 'bg-base-300' in html\nassert html.count('tooltip') &gt;= 4  # 4 tooltip wrappers\nassert 'data-tip=\"Selection\"' in html\nassert 'data-tip=\"Verify\"' in html\n\nprint(\"render_step_progress basic test passed!\")\n\n\n# Test edge cases\n\n# Empty steps\nempty_bar = render_step_progress([], 0)\nhtml = to_xml(empty_bar)\nassert 'id=\"step-progress\"' in html\nassert 'tooltip' not in html\n\n# Out of range index (clamped)\nbar = render_step_progress(steps, 10)\nhtml = to_xml(bar)\nassert 'tooltip' in html  # still renders\n\nbar = render_step_progress(steps, -5)\nhtml = to_xml(bar)\nassert 'tooltip' in html  # still renders\n\n# Single step\nsingle = render_step_progress([StepInfo(\"Only Step\")], 0)\nhtml = to_xml(single)\nassert 'data-tip=\"Only Step\"' in html\nassert 'border-l' not in html  # no separator for single step\n\n# Custom config\ncustom = StepProgressConfig(\n    fill_bg='accent', track_bg='base_200',\n    border_radius='box', id='my-progress'\n)\nbar = render_step_progress(steps, 2, custom)\nhtml = to_xml(bar)\nassert 'id=\"my-progress\"' in html\nassert 'bg-base-200' in html\nassert 'rounded-box' in html\nassert 'bg-accent' in html\n\nprint(\"Edge case tests passed!\")\n\nEdge case tests passed!",
+    "crumbs": [
+      "components",
+      "Progress Bar"
+    ]
+  },
+  {
+    "objectID": "components/progress_bar.html#create_step_progress_renderer",
+    "href": "components/progress_bar.html#create_step_progress_renderer",
+    "title": "Progress Bar",
+    "section": "create_step_progress_renderer",
+    "text": "create_step_progress_renderer\n\n\ncreate_step_progress_renderer\n\ndef create_step_progress_renderer(\n    config:Optional=None, # rendering config\n)-&gt;Callable: # callable with signature (steps, current_index) -&gt; FT\n\nCreate a progress renderer callback for StepFlow integration.\n\n# Test create_step_progress_renderer\nrenderer = create_step_progress_renderer()\nbar = renderer(steps, 0)\nhtml = to_xml(bar)\nassert 'id=\"step-progress\"' in html\nassert 'bg-primary' in html\n\n# With custom config\ncustom_renderer = create_step_progress_renderer(\n    StepProgressConfig(fill_bg='secondary')\n)\nbar = custom_renderer(steps, 1)\nhtml = to_xml(bar)\nassert 'bg-secondary' in html\n\nprint(\"create_step_progress_renderer tests passed!\")\n\ncreate_step_progress_renderer tests passed!",
+    "crumbs": [
+      "components",
+      "Progress Bar"
+    ]
+  },
+  {
+    "objectID": "core/config.html",
+    "href": "core/config.html",
+    "title": "Config",
+    "section": "",
+    "text": "def StepProgressConfig(\n    height:int=3, track_bg:str='base_300', fill_bg:str='primary', current_opacity:int=60, border_radius:str='field',\n    separator_color:str='base_100', show_tooltips:bool=True, tooltip_position:str='top', id:str='step-progress'\n)-&gt;None:\n\nRendering configuration for the step progress bar.\n\n# Test StepProgressConfig defaults\nconfig = StepProgressConfig()\nassert config.height == 3\nassert config.track_bg == \"base_300\"\nassert config.fill_bg == \"primary\"\nassert config.current_opacity == 60\nassert config.border_radius == \"field\"\nassert config.separator_color == \"base_100\"\nassert config.show_tooltips == True\nassert config.tooltip_position == \"top\"\nassert config.id == \"step-progress\"\n\n# Test custom config\ncustom = StepProgressConfig(fill_bg='secondary', height=4, show_tooltips=False)\nassert custom.fill_bg == \"secondary\"\nassert custom.height == 4\nassert custom.show_tooltips == False\n\nprint(\"StepProgressConfig tests passed!\")",
+    "crumbs": [
+      "core",
+      "Config"
+    ]
+  },
+  {
+    "objectID": "core/config.html#stepprogressconfig",
+    "href": "core/config.html#stepprogressconfig",
+    "title": "Config",
+    "section": "",
+    "text": "def StepProgressConfig(\n    height:int=3, track_bg:str='base_300', fill_bg:str='primary', current_opacity:int=60, border_radius:str='field',\n    separator_color:str='base_100', show_tooltips:bool=True, tooltip_position:str='top', id:str='step-progress'\n)-&gt;None:\n\nRendering configuration for the step progress bar.\n\n# Test StepProgressConfig defaults\nconfig = StepProgressConfig()\nassert config.height == 3\nassert config.track_bg == \"base_300\"\nassert config.fill_bg == \"primary\"\nassert config.current_opacity == 60\nassert config.border_radius == \"field\"\nassert config.separator_color == \"base_100\"\nassert config.show_tooltips == True\nassert config.tooltip_position == \"top\"\nassert config.id == \"step-progress\"\n\n# Test custom config\ncustom = StepProgressConfig(fill_bg='secondary', height=4, show_tooltips=False)\nassert custom.fill_bg == \"secondary\"\nassert custom.height == 4\nassert custom.show_tooltips == False\n\nprint(\"StepProgressConfig tests passed!\")",
+    "crumbs": [
+      "core",
+      "Config"
+    ]
+  }
+]
